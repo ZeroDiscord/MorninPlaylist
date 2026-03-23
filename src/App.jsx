@@ -46,11 +46,6 @@ const App = () => {
     }
   ];
 
-  useEffect(() => {
-    const today = new Date().getDay();
-    setCurrentDayIndex(today % playlist.length);
-  }, []);
-
   const currentVideo = playlist[currentDayIndex];
 
   const handleNext = () => {
