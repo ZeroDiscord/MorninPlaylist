@@ -9,9 +9,25 @@ html, body {
   padding: 0;
   min-height: 100vh;
   font-family: 'Plus Jakarta Sans', sans-serif;
-  background-color: #fdfbf7;
+  background-color: #fcf9f5;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Outfit', sans-serif;
+}
+
+/* Custom Hide Scrollbar but allow scrolling */
+.hide-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.hide-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.hide-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #fca5a5;
+  border-radius: 20px;
+}
+.hide-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #fca5a5 transparent;
 }

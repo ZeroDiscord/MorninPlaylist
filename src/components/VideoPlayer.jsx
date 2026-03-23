@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import YouTube from 'react-youtube';
-import { Play, Pause, SkipForward, SkipBack, Sparkles } from 'lucide-react';
+import { Play, Pause, SkipForward, SkipBack } from 'lucide-react';
 
 const VideoPlayer = ({ currentVideo, isPlaying, setIsPlaying, handleNext, handlePrev }) => {
   const playerRef = useRef(null);
@@ -23,7 +23,6 @@ const VideoPlayer = ({ currentVideo, isPlaying, setIsPlaying, handleNext, handle
   };
 
   const onStateChange = (event) => {
-    // YT.PlayerState.ENDED = 0, PLAYING = 1, PAUSED = 2
     if (event.data === 0) {
       handleNext();
     } else if (event.data === 1 && !isPlaying) {
@@ -57,9 +56,11 @@ const VideoPlayer = ({ currentVideo, isPlaying, setIsPlaying, handleNext, handle
   }, [isPlaying]);
 
   return (
-    <div className="space-y-6 animate-slide-up">
-      <div className="bg-white/80 backdrop-blur-xl rounded-3xl md:rounded-[2rem] shadow-2xl shadow-orange-900/5 border border-white overflow-hidden transition-all duration-500 hover:shadow-orange-900/10">
-        <div className="relative aspect-video bg-stone-900 w-full group">
+    <div className="flex flex-col h-full gap-4 animate-slide-up">
+      <div className="flex-1 flex flex-col bg-white/80 backdrop-blur-xl rounded-2xl md:rounded-3xl shadow-xl shadow-stone-200/30 border border-white/80 overflow-hidden min-h-0 bg-gradient-to-b from-white to-transparent">
+        
+        {/* Video Frame */}
+        <div className="relative w-full aspect-video bg-black shrink-0 group z-10">
           <YouTube 
             videoId={currentVideo.id} 
             opts={opts} 
@@ -68,52 +69,53 @@ const VideoPlayer = ({ currentVideo, isPlaying, setIsPlaying, handleNext, handle
             className="absolute top-0 left-0 w-full h-full"
             iframeClassName="w-full h-full border-0"
           />
-          {/* Subtle glow effect behind the player on desktop */}
-          <div className="absolute -inset-4 bg-gradient-to-r from-orange-500/20 to-rose-500/20 blur-2xl -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
+          <div className="absolute -inset-4 bg-gradient-to-r from-orange-500/10 to-rose-500/10 blur-2xl -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none"></div>
         </div>
         
-        <div className="p-6 md:p-10">
-          <div className="flex flex-col md:flex-row justify-between items-start mb-6 gap-4 md:gap-0">
+        {/* Under Video Information / Controls */}
+        <div className="flex-1 flex flex-col p-4 md:p-6 lg:p-8 overflow-y-auto hide-scrollbar z-0">
+          <div className="flex justify-between items-start mb-3 md:mb-4 gap-4">
             <div>
-              <span className="px-4 py-1.5 bg-gradient-to-r from-orange-100 to-rose-100 text-orange-800 text-xs font-extrabold rounded-full uppercase tracking-widest inline-block mb-4 shadow-sm border border-white">
+              <span className="px-3 py-1 bg-gradient-to-r from-orange-100 to-rose-100 text-orange-800 text-[10px] md:text-xs font-bold rounded-full uppercase tracking-widest inline-block mb-2 shadow-sm border border-white">
                 {currentVideo.type}
               </span>
-              <h2 className="text-3xl md:text-4xl font-display font-bold text-stone-900 leading-tight">
+              <h2 className="text-2xl md:text-3xl font-display font-bold text-stone-800 leading-tight">
                 {currentVideo.title}
               </h2>
             </div>
-            <div className="text-left md:text-right bg-stone-50/80 px-4 py-2 rounded-2xl border border-stone-100">
-              <p className="text-stone-400 text-xs uppercase tracking-widest font-semibold mb-1">Duration</p>
-              <p className="text-xl font-mono text-stone-700 font-bold">{currentVideo.duration}</p>
+            <div className="shrink-0 text-right bg-white rounded-xl md:rounded-2xl border border-stone-100 py-1.5 px-3 md:py-2 md:px-4 shadow-sm">
+              <p className="text-stone-400 text-[9px] md:text-[10px] uppercase tracking-widest font-bold mb-0.5">Duration</p>
+              <p className="text-sm md:text-lg font-mono text-stone-600 font-bold">{currentVideo.duration}</p>
             </div>
           </div>
-          <p className="text-stone-600 text-lg leading-relaxed font-medium">
+          
+          <p className="text-stone-500 text-sm md:text-base leading-relaxed font-medium flex-1">
             {currentVideo.description}
           </p>
           
-          <div className="mt-8 md:mt-10 flex items-center justify-center gap-4 md:gap-6 border-t border-stone-100/80 pt-8">
+          <div className="mt-4 md:mt-6 flex items-center justify-center gap-3 border-t border-stone-200/60 pt-4 md:pt-6">
             <button 
               onClick={handlePrev}
-              className="p-4 md:p-5 rounded-full bg-white border border-stone-200 hover:border-orange-300 hover:bg-orange-50 hover:text-orange-600 transition-all duration-300 text-stone-500 shadow-sm hover:shadow-md hover:-translate-y-1"
+              className="p-3 md:p-4 rounded-full bg-white border border-stone-200 hover:border-orange-300 hover:bg-orange-50 hover:text-orange-600 transition-all duration-300 text-stone-500 shadow-sm hover:shadow-md hover:-translate-y-0.5"
               title="Previous Session"
             >
-              <SkipBack size={24} />
+              <SkipBack size={20} />
             </button>
             <button 
               onClick={togglePlay}
-              className="flex-1 max-w-sm bg-gradient-to-r from-orange-500 to-rose-500 hover:from-orange-600 hover:to-rose-600 active:scale-95 text-white font-bold py-4 md:py-5 rounded-2xl md:rounded-3xl shadow-xl shadow-orange-500/30 transition-all duration-300 flex items-center justify-center gap-3 uppercase tracking-widest text-sm md:text-lg group"
+              className="w-full max-w-[14rem] md:max-w-xs bg-gradient-to-r from-orange-500 to-rose-500 hover:from-orange-600 hover:to-rose-600 active:scale-95 text-white font-bold py-3 md:py-4 rounded-xl md:rounded-2xl shadow-lg shadow-orange-500/25 transition-all duration-300 flex items-center justify-center gap-2 uppercase tracking-widest text-xs md:text-sm group"
             >
               {isPlaying 
-                ? <><Pause fill="white" size={24} className="group-hover:scale-110 transition-transform" /> <span className="drop-shadow-sm">Pause</span></> 
-                : <><Play fill="white" size={24} className="group-hover:scale-110 transition-transform" /> <span className="drop-shadow-sm">Start Session</span></>
+                ? <><Pause fill="white" size={18} className="group-hover:scale-110 transition-transform" /> <span className="drop-shadow-sm">Pause</span></> 
+                : <><Play fill="white" size={18} className="group-hover:scale-110 transition-transform" /> <span className="drop-shadow-sm">Start</span></>
               }
             </button>
             <button 
               onClick={handleNext}
-              className="p-4 md:p-5 rounded-full bg-white border border-stone-200 hover:border-orange-300 hover:bg-orange-50 hover:text-orange-600 transition-all duration-300 text-stone-500 shadow-sm hover:shadow-md hover:-translate-y-1"
+              className="p-3 md:p-4 rounded-full bg-white border border-stone-200 hover:border-orange-300 hover:bg-orange-50 hover:text-orange-600 transition-all duration-300 text-stone-500 shadow-sm hover:shadow-md hover:-translate-y-0.5"
               title="Next Session"
             >
-              <SkipForward size={24} />
+              <SkipForward size={20} />
             </button>
           </div>
         </div>

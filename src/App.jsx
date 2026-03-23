@@ -6,7 +6,7 @@ import { Heart } from 'lucide-react';
 
 const App = () => {
   const [currentDayIndex, setCurrentDayIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true); // Default to true for autoplay
+  const [isPlaying, setIsPlaying] = useState(true);
 
   // Video list
   const playlist = [
@@ -65,18 +65,19 @@ const App = () => {
   };
 
   return (
-    <div className="min-h-screen text-stone-800 font-sans selection:bg-rose-200 flex flex-col relative overflow-hidden bg-[#fdfaf6]">
+    <div className="min-h-screen lg:h-screen w-full flex flex-col relative overflow-x-hidden lg:overflow-hidden bg-[#fcf9f5] font-sans selection:bg-rose-200">
       {/* Background ambient blobs */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none -z-10">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-orange-300/20 blur-[100px] mix-blend-multiply animate-pulse"></div>
-        <div className="absolute top-[20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-rose-300/20 blur-[120px] mix-blend-multiply" style={{ animationDuration: '7s' }}></div>
-        <div className="absolute bottom-[-20%] left-[20%] w-[60%] h-[60%] rounded-full bg-pink-300/20 blur-[150px] mix-blend-multiply"></div>
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="absolute -top-[10%] -left-[5%] w-[45%] h-[45%] rounded-full bg-orange-300/15 blur-[100px] mix-blend-multiply animate-pulse"></div>
+        <div className="absolute top-[30%] -right-[10%] w-[50%] h-[50%] rounded-full bg-rose-300/15 blur-[120px] mix-blend-multiply" style={{ animationDuration: '8s' }}></div>
+        <div className="absolute -bottom-[20%] left-[15%] w-[55%] h-[55%] rounded-full bg-pink-300/15 blur-[120px] mix-blend-multiply"></div>
       </div>
 
       <Header />
 
-      <main className="flex-grow w-full max-w-[90rem] mx-auto p-4 md:p-6 lg:p-10 flex flex-col lg:flex-row gap-8 lg:gap-12 relative z-10">
-        <section className="w-full lg:w-[65%] xl:w-[70%]">
+      <main className="flex-1 min-h-0 w-full max-w-[95rem] mx-auto p-4 md:p-5 lg:p-6 flex flex-col lg:flex-row gap-5 lg:gap-6 relative z-10 w-full">
+        {/* Left Side: Video Player. On mobile takes exact height, on desktop takes full remaining height */}
+        <section className="w-full lg:w-[68%] xl:w-[72%] lg:h-full flex flex-col min-h-0">
           <VideoPlayer 
             currentVideo={currentVideo} 
             isPlaying={isPlaying} 
@@ -86,7 +87,8 @@ const App = () => {
           />
         </section>
 
-        <section className="w-full lg:w-[35%] xl:w-[30%]">
+        {/* Right Side: Playlist Sidebar. On desktop fits exactly, scrollable. On mobile takes normal height */}
+        <section className="w-full lg:w-[32%] xl:w-[28%] lg:h-full flex flex-col min-h-0 mt-2 lg:mt-0">
           <PlaylistSidebar 
             playlist={playlist} 
             currentDayIndex={currentDayIndex} 
@@ -95,11 +97,8 @@ const App = () => {
         </section>
       </main>
 
-      <footer className="text-center p-8 md:p-12 text-stone-500 text-xs md:text-sm mt-auto relative z-10 border-t border-stone-200/50 bg-white/30 backdrop-blur-md">
-        <p className="font-semibold tracking-wide">© 2026 Morning Serenity Meditation Portal</p>
-        <p className="mt-2 flex items-center justify-center gap-1.5 italic text-stone-400">
-          Made with <Heart size={14} className="text-rose-400 fill-rose-400 animate-pulse" /> for Mom
-        </p>
+      <footer className="shrink-0 text-center py-4 bg-white/40 backdrop-blur-md border-t border-stone-200/50 relative z-10">
+        <p className="font-semibold text-stone-500 text-xs tracking-wide">© 2026 Morning Serenity</p>
       </footer>
     </div>
   );
