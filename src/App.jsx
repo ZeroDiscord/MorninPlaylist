@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Header from './components/Header';
 import VideoPlayer from './components/VideoPlayer';
 import PlaylistSidebar from './components/PlaylistSidebar';
+import { Heart } from 'lucide-react';
 
 const App = () => {
   const [currentDayIndex, setCurrentDayIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true); // Default to true for autoplay
 
   // Video list
   const playlist = [
@@ -64,11 +65,18 @@ const App = () => {
   };
 
   return (
-    <div className="min-h-screen bg-stone-50 text-stone-800 font-serif selection:bg-orange-100 flex flex-col">
+    <div className="min-h-screen text-stone-800 font-sans selection:bg-rose-200 flex flex-col relative overflow-hidden bg-[#fdfaf6]">
+      {/* Background ambient blobs */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none -z-10">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-orange-300/20 blur-[100px] mix-blend-multiply animate-pulse"></div>
+        <div className="absolute top-[20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-rose-300/20 blur-[120px] mix-blend-multiply" style={{ animationDuration: '7s' }}></div>
+        <div className="absolute bottom-[-20%] left-[20%] w-[60%] h-[60%] rounded-full bg-pink-300/20 blur-[150px] mix-blend-multiply"></div>
+      </div>
+
       <Header />
 
-      <main className="flex-grow w-full max-w-7xl mx-auto p-4 md:p-6 lg:p-8 flex flex-col lg:flex-row gap-6 md:gap-8">
-        <section className="w-full lg:w-2/3 xl:w-3/4">
+      <main className="flex-grow w-full max-w-[90rem] mx-auto p-4 md:p-6 lg:p-10 flex flex-col lg:flex-row gap-8 lg:gap-12 relative z-10">
+        <section className="w-full lg:w-[65%] xl:w-[70%]">
           <VideoPlayer 
             currentVideo={currentVideo} 
             isPlaying={isPlaying} 
@@ -78,7 +86,7 @@ const App = () => {
           />
         </section>
 
-        <section className="w-full lg:w-1/3 xl:w-1/4">
+        <section className="w-full lg:w-[35%] xl:w-[30%]">
           <PlaylistSidebar 
             playlist={playlist} 
             currentDayIndex={currentDayIndex} 
@@ -87,10 +95,10 @@ const App = () => {
         </section>
       </main>
 
-      <footer className="text-center p-8 md:p-12 text-stone-400 text-xs md:text-sm mt-auto">
-        <p>© 2026 Morning Serenity Meditation Portal</p>
-        <p className="mt-1 flex items-center justify-center gap-1 italic">
-          Made with love for Mom
+      <footer className="text-center p-8 md:p-12 text-stone-500 text-xs md:text-sm mt-auto relative z-10 border-t border-stone-200/50 bg-white/30 backdrop-blur-md">
+        <p className="font-semibold tracking-wide">© 2026 Morning Serenity Meditation Portal</p>
+        <p className="mt-2 flex items-center justify-center gap-1.5 italic text-stone-400">
+          Made with <Heart size={14} className="text-rose-400 fill-rose-400 animate-pulse" /> for Mom
         </p>
       </footer>
     </div>
