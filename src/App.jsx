@@ -73,7 +73,7 @@ const App = () => {
         <div className="absolute -bottom-[20%] left-[15%] w-[55%] h-[55%] rounded-full bg-pink-300/15 blur-[120px] mix-blend-multiply"></div>
       </div>
 
-      <Header />
+      <Header isPlaying={isPlaying} />
 
       <main className="flex-1 min-h-0 w-full max-w-[95rem] mx-auto p-4 md:p-5 lg:p-6 flex flex-col lg:flex-row gap-5 lg:gap-6 relative z-10 w-full">
         {/* Left Side: Video Player. On mobile takes exact height, on desktop takes full remaining height */}
