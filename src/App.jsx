@@ -6,9 +6,10 @@ import { Heart } from 'lucide-react';
 
 const App = () => {
   const [currentDayIndex, setCurrentDayIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
+  // Browsers block autoplay on first load without user interaction.
+  // Setting this to false ensures the UI accurately reflects the "paused" state initially.
+  const [isPlaying, setIsPlaying] = useState(false);
 
-  // Video list
   const playlist = [
     {
       id: '081bLdQKX-Q',
@@ -65,7 +66,7 @@ const App = () => {
   };
 
   return (
-    <div className="min-h-screen lg:h-screen w-full flex flex-col relative overflow-x-hidden lg:overflow-hidden bg-[#fcf9f5] font-sans selection:bg-rose-200">
+    <div className="min-h-screen w-full flex flex-col relative bg-[#fcf9f5] font-sans selection:bg-rose-200 overflow-x-hidden">
       {/* Background ambient blobs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <div className="absolute -top-[10%] -left-[5%] w-[45%] h-[45%] rounded-full bg-orange-300/15 blur-[100px] mix-blend-multiply animate-pulse"></div>
@@ -75,9 +76,9 @@ const App = () => {
 
       <Header isPlaying={isPlaying} />
 
-      <main className="flex-1 min-h-0 w-full max-w-[95rem] mx-auto p-4 md:p-5 lg:p-6 flex flex-col lg:flex-row gap-5 lg:gap-6 relative z-10 w-full">
-        {/* Left Side: Video Player. On mobile takes exact height, on desktop takes full remaining height */}
-        <section className="w-full lg:w-[68%] xl:w-[72%] lg:h-full flex flex-col min-h-0">
+      <main className="flex-1 w-full max-w-[95rem] mx-auto p-4 md:p-6 lg:p-8 flex flex-col lg:flex-row gap-6 lg:gap-8 relative z-10">
+        {/* Left Side: Video Player */}
+        <section className="w-full lg:w-[65%] xl:w-[70%]">
           <VideoPlayer 
             currentVideo={currentVideo} 
             isPlaying={isPlaying} 
@@ -87,17 +88,19 @@ const App = () => {
           />
         </section>
 
-        {/* Right Side: Playlist Sidebar. On desktop fits exactly, scrollable. On mobile takes normal height */}
-        <section className="w-full lg:w-[32%] xl:w-[28%] lg:h-full flex flex-col min-h-0 mt-2 lg:mt-0">
-          <PlaylistSidebar 
-            playlist={playlist} 
-            currentDayIndex={currentDayIndex} 
-            selectVideo={selectVideo} 
-          />
+        {/* Right Side: Playlist Sidebar (Sticky on desktop) */}
+        <section className="w-full lg:w-[35%] xl:w-[30%] relative">
+          <div className="lg:sticky lg:top-28">
+            <PlaylistSidebar 
+              playlist={playlist} 
+              currentDayIndex={currentDayIndex} 
+              selectVideo={selectVideo} 
+            />
+          </div>
         </section>
       </main>
 
-      <footer className="shrink-0 text-center py-4 bg-white/40 backdrop-blur-md border-t border-stone-200/50 relative z-10">
+      <footer className="mt-8 text-center py-6 bg-white/40 backdrop-blur-md border-t border-stone-200/50 relative z-10 w-full">
         <p className="font-semibold text-stone-500 text-xs tracking-wide">© 2026 Morning Serenity</p>
       </footer>
     </div>
